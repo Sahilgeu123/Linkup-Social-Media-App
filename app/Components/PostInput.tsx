@@ -22,6 +22,10 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeCommentModel, openLogInModel } from "@/redux/Slices/modalSlice";
 
+interface PostInputProps1 {
+  here:string;
+}
+
 type PostInputProps = {
   placeholder: string;
   insideModal: boolean;
