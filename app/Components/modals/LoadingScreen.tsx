@@ -28,7 +28,7 @@ const LoginScreen = () => {
         />
         <h1 className="text-6xl font-bold mb-10">LinkUp</h1>
         <Box sx={{ width: "100%" }}>
-          <LinearProgress aria-label="Loading…" color="black" />
+          <LinearProgress aria-label="Loading…" color="primary" />
         </Box>
       </div>
     </div>
