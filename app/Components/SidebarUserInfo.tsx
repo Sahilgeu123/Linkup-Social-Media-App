@@ -7,10 +7,10 @@ import { auth } from "@/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { signoutUser } from "@/redux/Slices/userSlice";
 import { AppDispatch, RootState } from "@/redux/store";
-import { div } from "@tensorflow/tfjs";
 
 const SidebarUserInfo = () => {
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -44,13 +44,13 @@ const SidebarUserInfo = () => {
         absolute left-14 top-1 xl:group-hover:hidden
       bg-white shadow-md rounded-md px-5 py-1 min-w-36 z-30"
       >
-        <span className="font-semibold whitespace-nowrap text-ellipsis overflow-hidden ">{user.name}</span>
-        <span className="text-[9px] text-gray-500 whitespace-nowrap text-ellipsis overflow-hidden">{user.username}</span>
+        <span className="font-semibold whitespace-nowrap text-ellipsis overflow-hidden ">{user?.name}</span>
+        <span className="text-[9px] text-gray-500 whitespace-nowrap text-ellipsis overflow-hidden">{user?.username}</span>
       </div>
 
       <div className="flex-col hidden xl:flex sm:hover:flex min-w-20">
-        <span className="font-semibold whitespace-nowrap text-ellipsis overflow-hidden">{user.name}</span>
-        <span className="text-[9px] text-gray-500 whitespace-nowrap text-ellipsis overflow-hidden">{user.username}</span>
+        <span className="font-semibold whitespace-nowrap text-ellipsis overflow-hidden">{user?.name}</span>
+        <span className="text-[9px] text-gray-500 whitespace-nowrap text-ellipsis overflow-hidden">{user?.username}</span>
       </div>
     </div>
   );

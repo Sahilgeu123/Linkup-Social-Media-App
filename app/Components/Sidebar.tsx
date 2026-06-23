@@ -9,7 +9,8 @@ import {
   EllipsisHorizontalCircleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image"; // Changed: Import Image directly from 'next/image' instead of the whole 'next' module
-import SidebarUserInfo from "./SidebarUserInfo";
+import SidebarUserInfo from "@/app/Components/SidebarUserInfo";
+
 // ...existing code...
 
 const Sidebar = () => {

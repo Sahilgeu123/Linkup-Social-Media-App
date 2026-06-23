@@ -16,13 +16,14 @@
     "@mui/system": "^9.0.1",
     "@reduxjs/toolkit": "^2.11.2",
     "firebase": "^12.12.1",
-    "next": "^14.2.35",
+    "next": "^16.2.9",
     "react": "^18",
     "react-dom": "^18",
     "react-moment": "^1.2.2",
     "react-redux": "^9.2.0"
   },
   "devDependencies": {
+    "@types/firebase": "^2.4.32",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
