@@ -22,9 +22,9 @@ const SidebarUserInfo = () => {
   return (
     <div
       className=" flex justify-start items-center space-x-1 absolute 
-            bottom-0 left-0 right-0 p-0 xl:pr-9 ml-4 xl:ml-[-4px] mb-3  w-14 h-14 
+            bottom-1 left-[-6px] xl:left-0 right-0 p-0 xl:pr-9 ml-4 xl:ml-[-4px] mb-3  w-14 h-14 
             xl:min-w-[175px]  xl:h-[60px] group 
-            border-y rounded-full  border-gray-300 cursor-pointer
+            rounded-full  border-gray-300 cursor-pointer
             hover:bg-gray-200 hover:border-gray-500 transition duration-300"
       onClick={() => {
         handleSignOut();

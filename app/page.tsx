@@ -4,7 +4,7 @@ import PostFeed from "./Components/PostFeed";
 import Widget from "./Components/Widget";
 import SignUpPrompt from "./Components/SignUpPrompt";
 import CommentModal from "./Components/modals/CommentModal";
-import LoginScreen from "./Components/modals/LoginScreen";
+import LoginScreen from "./Components/modals/LoadingScreen";
 
 export default function Home() {
   return (
@@ -23,3 +23,4 @@ export default function Home() {
     </>
   );
 };
+ 

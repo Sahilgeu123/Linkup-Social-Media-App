@@ -3,8 +3,8 @@ import React from "react";
 import Sidebar from "../Components/Sidebar";
 import Widget from "../Components/Widget";
 import SignUpPrompt from "../Components/SignUpPrompt";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import {
-  ArrowLeftIcon,
   ArrowUpTrayIcon,
   ChartBarIcon,
   ChatBubbleOvalLeftEllipsisIcon,
@@ -14,22 +14,42 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { PostHeader } from "../Components/Post";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, getDocs, doc, collection } from "firebase/firestore";
 import { db } from "@/firebase";
 
-const fetchPost = async (id: string) => {
+interface PostWithComments {
+  id: string;
+  name?: string;
+  username?: string;
+  text?: string;
+  likes?: string[];
+  comments?: Comment[];
+}
+
+const fetchPostWithComments = async (
+  id: string,
+): Promise<PostWithComments | null> => {
   const postRef = doc(db, "posts", id);
   const postSnap = await getDoc(postRef);
 
-console.log("ID used:", id);
+  if (!postSnap.exists()) return null;
 
-if (postSnap.exists()) {
-  console.log("Document data:", postSnap.data());
-  return postSnap.data();
-} else {
-  console.log("No such document!");
-  return null;
-}
+  // Fetch comments subcollection
+  const commentsRef = collection(postRef, "comments");
+  const commentsSnap = await getDocs(commentsRef);
+
+  const comments = commentsSnap.docs.map((commentDoc) => ({
+    id: commentDoc.id,
+    ...(commentDoc.data() as Comment),
+  }));
+
+  const postData = postSnap.data() as Omit<PostWithComments, "id" | "comments">;
+
+  return {
+    id: postSnap.id,
+    ...postData,
+    comments,
+  };
 };
 
 interface PostProps {
@@ -38,15 +58,15 @@ interface PostProps {
   };
 }
 
-interface Comment{
-    name:string;
-    text:string;
-    username:string;
+interface Comment {
+  name: string;
+  text: string;
+  username: string;
 }
 
 async function page({ params }: PostProps) {
   const { id } = params;
-  const post = await fetchPost(id);
+  const post = await fetchPostWithComments(id);
 
   return (
     <div>
@@ -54,11 +74,16 @@ async function page({ params }: PostProps) {
         <Sidebar />
 
         <div className="flex-grow justify-center max-w-2xl min-w-[440px]">
-          <div className="pt-4 pb-3 px-5 sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm font-bold border-b-2 border-gray-300 flex gap-5 items-center">
+          <div className="pt-4 pb-3 px-5 sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm border-b-2 border-gray-300 flex gap-5 items-center">
             <Link href={"/"}>
-              <ArrowLeftIcon className="w-5 h-5" />
+              <Image
+                src="/assets/left-arrow.png"
+                width={30}
+                height={30}
+                alt="Logo"
+              />
             </Link>
-            LinkUp
+            <p className="text-2xl font-bold">LinkUp</p>
           </div>
 
           <div>
@@ -90,29 +115,28 @@ async function page({ params }: PostProps) {
             <ChartBarIcon className="w-[22px] h-[22px] text-[#707E89] cursor-not-allowed" />
             <ArrowUpTrayIcon className="w-[22px] h-[22px] text-[#707E89] cursor-not-allowed" />
           </div>
-          {
-            post?.comments.map((comment:Comment)=>(
-              <Comment name={comment.name} 
-              username={comment.username} 
-              text={comment.text} />
-            ))
-          }
-          
+          {post?.comments?.map((comment: Comment) => (
+            <Comment
+              name={comment.name}
+              username={comment.username}
+              text={comment.text}
+            />
+          ))}
         </div>
         <Widget />
       </div>
-      
+
       <SignUpPrompt />
     </div>
   );
 }
-interface CommentProps{
-  name:string,
-  username:string,
-  text:string
+interface CommentProps {
+  name: string;
+  username: string;
+  text: string;
 }
 
-function Comment({name,username,text}:CommentProps) {
+function Comment({ name, username, text }: CommentProps) {
   return (
     <div className="border-b border-gray-100">
       <PostHeader name={name} username={username} text={text} />

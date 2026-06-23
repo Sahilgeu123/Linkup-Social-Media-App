@@ -6,7 +6,8 @@ import { loadBindings } from 'next/dist/build/swc';
 import loadingSlice from './Slices/loadingSlice';
 
 export const store = configureStore({
-  reducer: { modals: modalSlice,
+  reducer: { 
+    modals: modalSlice,
     user:userSlice,
     loading:loadingSlice
   }

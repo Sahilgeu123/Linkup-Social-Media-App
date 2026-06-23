@@ -26,6 +26,8 @@ const PostFeed = () => {
     });
   }, []);
 
+
+
   return (
     <div className="flex-grow justify-center max-w-2xl min-w-[440px]">
       <div
@@ -34,7 +36,7 @@ const PostFeed = () => {
       >
         Home
       </div>
-      <PostInput placeholder="What's happening..." insideModal={true} />
+      <PostInput placeholder="What's happening..." insideModal={false} />
       {posts.map((post) => (
         <Post data={post.data()} id={post.id} />
       ))}

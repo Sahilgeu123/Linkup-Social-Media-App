@@ -22,10 +22,6 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeCommentModel, openLogInModel } from "@/redux/Slices/modalSlice";
 
-interface PostInputProps1 {
-  here:string;
-}
-
 type PostInputProps = {
   placeholder: string;
   insideModal: boolean;
@@ -41,23 +37,32 @@ const PostInput: React.FC<PostInputProps> = ({ placeholder, insideModal }) => {
   const dispatch = useDispatch();
   console.log(user.name);
 
-  async function sendPost() {
-
-    if(!user.username){
+async function sendPost() {
+  try {
+    if (!user.username) {
       dispatch(closeCommentModel());
       dispatch(openLogInModel());
       return;
     }
-    await addDoc(collection(db, "posts"), {
+
+    const postsRef = collection(db, "posts");
+
+    await addDoc(postsRef, {
       text: text,
       name: user.name,
       username: user.username,
       timestamp: serverTimestamp(),
       likes: [],
-      comments: [],
+      comments: [], // optional if you’re using subcollection for comments
     });
-    settext("");
+
+    console.log("Post added successfully!");
+    settext(""); // clear input
+  } catch (error) {
+    console.error("Error adding post:", error);
   }
+}
+
 
   async function sendComment() {
     if (!commentDetails?.id) {
@@ -107,9 +112,8 @@ const PostInput: React.FC<PostInputProps> = ({ placeholder, insideModal }) => {
             <MapPinIcon className="w-[22px] h-[22px] cursor-pointer hover:text-gray-500" />
           </div>
           <button
-            className="px-4 py-1 rounded-xl border-y-2 hover:border-2 transition-border border-gray-300
-           hover:border-gray-500 transition-colors 
-           duration-600 disabled:bg-opacity-60 font-bold hover:bg-gray-100"
+            className="px-4 py-1 rounded-xl border-2 border-gray-300 hover:scale-95 bg-gray-300 transition-colors 
+           duration-600 disabled:bg-opacity-60 font-bold"
             onClick={() => (insideModal ? sendComment() : sendPost())}
             disabled={!text}
           >
